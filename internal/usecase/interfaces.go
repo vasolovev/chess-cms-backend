@@ -17,7 +17,7 @@ type (
 
 	// TournamentRepo -.
 	TournamentRepo interface {
-		Store(context.Context, entity.Tournament) error
+		Create(context.Context, entity.Tournament) error
 		GetByID(context.Context, string) (entity.Tournament, error)
 		GetAll(context.Context) ([]entity.Tournament, error)
 	}
@@ -25,5 +25,24 @@ type (
 	// TournamentWebAPI -.
 	TournamentWebAPI interface {
 		RequestInfoTournament(context.Context, string) (entity.Tournament, error)
+	}
+
+	User interface {
+		Add(context.Context, entity.User) error
+		GetByID(context.Context, string) (entity.User, error)
+		GetAll(context.Context) ([]entity.User, error)
+	}
+
+	UserRepo interface {
+		Create(context.Context, entity.User) error
+	}
+	Lichess interface {
+		Create(context.Context, entity.Lichess) error
+	}
+	LichessRepo interface {
+		Create(context.Context, entity.Lichess) error
+		GetAll(context.Context, entity.Lichess) error
+		Update(context.Context, entity.Lichess) error
+		Delete(context.Context, entity.Lichess) error
 	}
 )

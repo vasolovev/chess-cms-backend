@@ -40,10 +40,15 @@ func (r *tournamentRoutes) add(c *gin.Context) {
 
 	if err != nil {
 		fmt.Errorf("TournamentHttp - getAll - r.t.Add: %w", err)
-		c.String(http.StatusBadRequest, "")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "failure",
+		})
 		return
 	}
-	c.JSON(http.StatusOK, nil)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
+	})
 }
 func (r *tournamentRoutes) getByID(c *gin.Context) {
 	// Если в запросе

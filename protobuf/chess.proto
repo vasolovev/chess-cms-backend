@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+option go_package = "./";
+
+package chess;
+
+service Chess {
+    rpc Add(AddRequest) returns (AddResponse) {}
+}
+
+message AddRequest {
+    string id = 1;
+}
+message AddResponse {
+    int32 id = 1;
+    string name = 2;
+    string createdBy = 3;
+    string type = 4;
+    google.protobuf.Timestamp startsAt = 5;
+}

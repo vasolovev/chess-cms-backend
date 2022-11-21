@@ -31,15 +31,35 @@ func Run(cfg *config.Config) {
 	db := mongoClient.Database(cfg.Mongo.Name)
 
 	// Use case
-	tournamentUseCase := usecase.New(
-		repo.New(db),
+	tournamentUseCase := usecase.NewTournamentUseCase(
+		repo.NewTournamentRepo(db),
 		webapi.New(),
+	)
+	userUseCase := usecase.NewUserUseCase(
+		repo.NewUserRepo(db),
+	)
+	lichessAccountUseCase := usecase.NewLichessUseCase(
+		repo.NewLichessRepo(db),
 	)
 
 	// HTTP Server
 	handler := gin.New()
-	v1.NewRouter(handler, l, tournamentUseCase)
+	v1.NewRouter(handler, l, tournamentUseCase, userUseCase, lichessAccountUseCase)
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
+
+	// gRPC Server
+	// go func() {
+	// 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", cfg.GRPC.IP, cfg.GRPC.Port))
+	// 	if err != nil {
+	// 		l.Error(fmt.Errorf("app - Run - gRPC.Listen: %w", err))
+	// 	}
+
+	// 	serverOptions := []grpc.ServerOption{}
+
+	// 	grpcServer := grpc.NewServer(serverOptions...)
+
+	// 	err = grpcServer.Serve(listener)
+	// }()
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)

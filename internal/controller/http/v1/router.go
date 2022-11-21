@@ -19,7 +19,7 @@ import (
 // @version     1.0
 // @host        localhost:8080
 // @BasePath    /v1
-func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Tournament) {
+func NewRouter(handler *gin.Engine, l logger.Interface, t usecase.Tournament, u usecase.User, li usecase.Lichess) {
 	// Options
 	handler.Use(gin.Logger())
 	handler.Use(gin.Recovery())
