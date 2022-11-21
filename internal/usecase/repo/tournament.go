@@ -15,14 +15,14 @@ type TournamentRepo struct {
 }
 
 // New -.
-func New(db *mongo.Database) *TournamentRepo {
+func NewTournamentRepo(db *mongo.Database) *TournamentRepo {
 	return &TournamentRepo{
 		db: db.Collection(tournamentsCollection),
 	}
 }
 
 // Сохранение в базу данных сведений о турнире
-func (r *TournamentRepo) Store(ctx context.Context, tournament entity.Tournament) error {
+func (r *TournamentRepo) Create(ctx context.Context, tournament entity.Tournament) error {
 	_, err := r.db.InsertOne(ctx, tournament)
 	if err != nil {
 		return fmt.Errorf("TournamentRepo - Store - r.db.InsertOne: %w", err)
@@ -32,7 +32,7 @@ func (r *TournamentRepo) Store(ctx context.Context, tournament entity.Tournament
 func (r *TournamentRepo) GetByID(ctx context.Context, id string) (entity.Tournament, error) {
 	var tournament entity.Tournament
 
-	err := r.db.FindOne(ctx, bson.M{"id": id}).Decode(&tournament)
+	err := r.db.FindOne(ctx, bson.M{"_id": id}).Decode(&tournament)
 	if err != nil {
 		return entity.Tournament{}, fmt.Errorf("TournamentRepo - GetByID - r.db.FindOne: %w", err)
 	}
@@ -48,7 +48,7 @@ func (r *TournamentRepo) GetAll(ctx context.Context) ([]entity.Tournament, error
 		return []entity.Tournament{}, fmt.Errorf("TournamentRepo - GetAll - r.db.Find: %w", err)
 	}
 
-	// Декоидрование результата запроса в массив
+	// Декодирование результата запроса в массив
 	err = result.All(ctx, &tournaments)
 	if err != nil {
 		return []entity.Tournament{}, fmt.Errorf("TournamentRepo - GetAll - result.All: %w", err)
