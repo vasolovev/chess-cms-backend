@@ -4,13 +4,15 @@ package usecase
 import (
 	"context"
 	"v1/internal/entity"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //go:generate mockgen -source=interfaces.go -destination=./mocks_test.go -package=usecase_test
 
 type (
 	Tournament interface {
-		Add(context.Context, string) error
+		Add(context.Context, string) (entity.Tournament, error)
 		GetByID(context.Context, string) (entity.Tournament, error)
 		GetAll(context.Context) ([]entity.Tournament, error)
 	}
@@ -29,20 +31,30 @@ type (
 
 	User interface {
 		Add(context.Context, entity.User) error
-		GetByID(context.Context, string) (entity.User, error)
+		GetByID(context.Context, primitive.ObjectID) (entity.User, error)
 		GetAll(context.Context) ([]entity.User, error)
+		Delete(context.Context, primitive.ObjectID) error
 	}
 
 	UserRepo interface {
 		Create(context.Context, entity.User) error
+		GetAll(context.Context) ([]entity.User, error)
+		GetByID(context.Context, primitive.ObjectID) (entity.User, error)
+		Update(context.Context, entity.User) error
+		Delete(context.Context, primitive.ObjectID) error
 	}
 	Lichess interface {
-		Create(context.Context, entity.Lichess) error
+		Create(context.Context, entity.Lichess) (primitive.ObjectID, error)
+		GetAll(context.Context) ([]entity.Lichess, error)
+		GetByID(context.Context, primitive.ObjectID) (entity.Lichess, error)
+		Update(context.Context, entity.Lichess) error
+		Delete(context.Context, primitive.ObjectID) error
 	}
 	LichessRepo interface {
-		Create(context.Context, entity.Lichess) error
-		GetAll(context.Context, entity.Lichess) error
+		Create(context.Context, entity.Lichess) (primitive.ObjectID, error)
+		GetAll(context.Context) ([]entity.Lichess, error)
+		GetByID(context.Context, primitive.ObjectID) (entity.Lichess, error)
 		Update(context.Context, entity.Lichess) error
-		Delete(context.Context, entity.Lichess) error
+		Delete(context.Context, primitive.ObjectID) error
 	}
 )

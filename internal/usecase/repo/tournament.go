@@ -6,7 +6,9 @@ import (
 	"v1/internal/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // TournamentRepo -.
@@ -43,7 +45,9 @@ func (r *TournamentRepo) GetByID(ctx context.Context, id string) (entity.Tournam
 func (r *TournamentRepo) GetAll(ctx context.Context) ([]entity.Tournament, error) {
 	// Получение всех данных о турнирах в базе данных
 	var tournaments []entity.Tournament
-	result, err := r.db.Find(ctx, bson.M{})
+	filter := bson.D{}
+	opts := options.Find().SetSort(bson.D{{"startAt", 1}})
+	result, err := r.db.Find(ctx, filter, opts)
 	if err != nil {
 		return []entity.Tournament{}, fmt.Errorf("TournamentRepo - GetAll - r.db.Find: %w", err)
 	}
@@ -54,4 +58,11 @@ func (r *TournamentRepo) GetAll(ctx context.Context) ([]entity.Tournament, error
 		return []entity.Tournament{}, fmt.Errorf("TournamentRepo - GetAll - result.All: %w", err)
 	}
 	return tournaments, err
+}
+func (r *TournamentRepo) Delete(ctx context.Context, id primitive.ObjectID) error {
+	_, err := r.db.DeleteOne(ctx, bson.M{"_id": id})
+	if err != nil {
+		return fmt.Errorf("TournamentRepo - Delete - r.db.DeleteOne: %w", err)
+	}
+	return err
 }

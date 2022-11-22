@@ -46,6 +46,17 @@ func (r *LichessRepo) GetAll(ctx context.Context) ([]entity.Lichess, error) {
 	return players, err
 }
 
+func (r *LichessRepo) GetByID(ctx context.Context, id primitive.ObjectID) (entity.Lichess, error) {
+	var lichess entity.Lichess
+
+	err := r.db.FindOne(ctx, bson.M{"_id": id}).Decode(&lichess)
+	if err != nil {
+		return entity.Lichess{}, fmt.Errorf("TournamentRepo - GetByID - r.db.FindOne: %w", err)
+	}
+
+	return lichess, err
+}
+
 func (r *LichessRepo) Update(ctx context.Context, lichess entity.Lichess) error {
 	_, err := r.db.UpdateOne(ctx, bson.M{"_id": lichess.ID}, bson.M{"$set": bson.M{"ban": lichess.Ban}})
 	if err != nil {
