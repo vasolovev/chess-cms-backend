@@ -3,10 +3,13 @@ package repo
 import (
 	"context"
 	"fmt"
-	"v1/internal/entity"
+
+	"github.com/vasolovev/ChessCMS/internal/entity"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // TournamentRepo -.
@@ -15,14 +18,14 @@ type TournamentRepo struct {
 }
 
 // New -.
-func New(db *mongo.Database) *TournamentRepo {
+func NewTournamentRepo(db *mongo.Database) *TournamentRepo {
 	return &TournamentRepo{
 		db: db.Collection(tournamentsCollection),
 	}
 }
 
 // Сохранение в базу данных сведений о турнире
-func (r *TournamentRepo) Store(ctx context.Context, tournament entity.Tournament) error {
+func (r *TournamentRepo) Create(ctx context.Context, tournament entity.Tournament) error {
 	_, err := r.db.InsertOne(ctx, tournament)
 	if err != nil {
 		return fmt.Errorf("TournamentRepo - Store - r.db.InsertOne: %w", err)
@@ -32,7 +35,7 @@ func (r *TournamentRepo) Store(ctx context.Context, tournament entity.Tournament
 func (r *TournamentRepo) GetByID(ctx context.Context, id string) (entity.Tournament, error) {
 	var tournament entity.Tournament
 
-	err := r.db.FindOne(ctx, bson.M{"id": id}).Decode(&tournament)
+	err := r.db.FindOne(ctx, bson.M{"_id": id}).Decode(&tournament)
 	if err != nil {
 		return entity.Tournament{}, fmt.Errorf("TournamentRepo - GetByID - r.db.FindOne: %w", err)
 	}
@@ -43,15 +46,24 @@ func (r *TournamentRepo) GetByID(ctx context.Context, id string) (entity.Tournam
 func (r *TournamentRepo) GetAll(ctx context.Context) ([]entity.Tournament, error) {
 	// Получение всех данных о турнирах в базе данных
 	var tournaments []entity.Tournament
-	result, err := r.db.Find(ctx, bson.M{})
+	filter := bson.D{}
+	opts := options.Find().SetSort(bson.D{{"startAt", 1}})
+	result, err := r.db.Find(ctx, filter, opts)
 	if err != nil {
 		return []entity.Tournament{}, fmt.Errorf("TournamentRepo - GetAll - r.db.Find: %w", err)
 	}
 
-	// Декоидрование результата запроса в массив
+	// Декодирование результата запроса в массив
 	err = result.All(ctx, &tournaments)
 	if err != nil {
 		return []entity.Tournament{}, fmt.Errorf("TournamentRepo - GetAll - result.All: %w", err)
 	}
 	return tournaments, err
+}
+func (r *TournamentRepo) Delete(ctx context.Context, id primitive.ObjectID) error {
+	_, err := r.db.DeleteOne(ctx, bson.M{"_id": id})
+	if err != nil {
+		return fmt.Errorf("TournamentRepo - Delete - r.db.DeleteOne: %w", err)
+	}
+	return err
 }

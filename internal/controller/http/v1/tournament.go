@@ -3,8 +3,9 @@ package v1
 import (
 	"fmt"
 	"net/http"
-	"v1/internal/usecase"
-	"v1/pkg/logger"
+
+	"github.com/vasolovev/ChessCMS/internal/usecase"
+	"github.com/vasolovev/ChessCMS/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,21 +30,34 @@ func (r *tournamentRoutes) getAll(c *gin.Context) {
 
 	if err != nil {
 		fmt.Errorf("TournamentHttp - getAll - r.t.GetAll: %w", err)
-		c.String(http.StatusBadRequest, "")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "failure",
+		})
 		return
 	}
 	c.JSON(http.StatusOK, tournaments)
+	return
 }
 func (r *tournamentRoutes) add(c *gin.Context) {
 	id := c.Query("id")
-	err := r.t.Add(c.Request.Context(), id)
+	tournament, err := r.t.Add(c.Request.Context(), id)
 
 	if err != nil {
 		fmt.Errorf("TournamentHttp - getAll - r.t.Add: %w", err)
-		c.String(http.StatusBadRequest, "")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "failure",
+		})
 		return
 	}
-	c.JSON(http.StatusOK, nil)
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":         tournament.ID,
+		"name":       tournament.FullName,
+		"createdBy":  tournament.CreatedBy,
+		"startsAt":   tournament.StartsAt,
+		"isFinished": tournament.IsFinished,
+	})
+	return
 }
 func (r *tournamentRoutes) getByID(c *gin.Context) {
 	// Если в запросе
@@ -52,12 +66,17 @@ func (r *tournamentRoutes) getByID(c *gin.Context) {
 
 	if err != nil {
 		fmt.Errorf("TournamentHttp - getAll - r.t.GetAll: %w", err)
-		c.String(http.StatusBadRequest, "")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "failure",
+		})
 		return
 	}
 	if tournament.NbPlayers == 0 {
-		c.String(http.StatusNotFound, "null")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "failure",
+		})
 		return
 	}
 	c.JSON(http.StatusOK, tournament)
+	return
 }

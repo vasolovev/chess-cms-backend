@@ -2,8 +2,9 @@ package webapi
 
 import (
 	"fmt"
-	"v1/internal/entity"
-	"v1/pkg/lichess"
+
+	"github.com/vasolovev/ChessCMS/internal/entity"
+	"github.com/vasolovev/ChessCMS/pkg/lichess"
 
 	"golang.org/x/net/context"
 )

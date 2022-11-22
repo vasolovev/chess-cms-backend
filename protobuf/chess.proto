@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// import "google/protobuf/timestamp.proto";
+option go_package = "./";
+
+package chess;
+
+service Chess {
+    rpc AddTournament(TournamentID) returns (Tournament) {}
+}
+
+message TournamentID {
+    string id = 1;
+}
+message Tournament {
+    string id = 1;
+    string name = 2;
+    string createdBy = 3;
+    bool isFinished = 4;
+    int64 startsAt = 5;
+}

@@ -1,45 +1,47 @@
 package entity
 
-import "time"
+import (
+	"time"
+)
 
 type Tournament struct {
-	NbPlayers  int           `json:"nbPlayers"`
-	Duels      []interface{} `json:"duels"`
-	IsFinished bool          `json:"isFinished"`
+	NbPlayers  int           `json:"nbPlayers" bson:"nbPlayers"`
+	Duels      []interface{} `json:"duels" bson:"duels"`
+	IsFinished bool          `json:"isFinished" bson:"isFinished"`
 	Podium     []struct {
-		Name   string `json:"name"`
-		Rank   int    `json:"rank"`
-		Rating int    `json:"rating"`
-		Score  int    `json:"score"`
+		Name   string `json:"name" bson:"name"`
+		Rank   int    `json:"rank" bson:"rank"`
+		Rating int    `json:"rating" bson:"rating"`
+		Score  int    `json:"score" bson:"score"`
 		Sheet  struct {
-		} `json:"sheet"`
+		} `json:"sheet" bson:"sheet"`
 		Nb struct {
-			Game    int `json:"game"`
-			Berserk int `json:"berserk"`
-			Win     int `json:"win"`
-		} `json:"nb"`
-		Performance int `json:"performance"`
-	} `json:"podium"`
-	PairingsClosed bool `json:"pairingsClosed"`
+			Game    int `json:"game" bson:"game"`
+			Berserk int `json:"berserk" bson:"berserk"`
+			Win     int `json:"win" bson:"win"`
+		} `json:"nb" bson:"nb"`
+		Performance int `json:"performance" bson:"performance"`
+	} `json:"podium" bson:"podium"`
+	PairingsClosed bool `json:"pairingsClosed" bson:"pairingsClosed"`
 	Stats          struct {
-		Games         int `json:"games"`
-		Moves         int `json:"moves"`
-		WhiteWins     int `json:"whiteWins"`
-		BlackWins     int `json:"blackWins"`
-		Draws         int `json:"draws"`
-		Berserks      int `json:"berserks"`
-		AverageRating int `json:"averageRating"`
-	} `json:"stats"`
+		Games         int `json:"games" bson:"games"`
+		Moves         int `json:"moves" bson:"moves"`
+		WhiteWins     int `json:"whiteWins" bson:"whiteWins"`
+		BlackWins     int `json:"blackWins" bson:"blackWins"`
+		Draws         int `json:"draws" bson:"draws"`
+		Berserks      int `json:"berserks" bson:"berserks"`
+		AverageRating int `json:"averageRating" bson:"averageRating"`
+	} `json:"stats" bson:"stats"`
 	Standing struct {
-		Page    int `json:"page"`
+		Page    int `json:"page" bson:"page"`
 		Players []struct {
-			Name   string `json:"name"`
-			Rank   int    `json:"rank"`
-			Rating int    `json:"rating"`
-			Score  int    `json:"score"`
+			Name   string `json:"name" bson:"name"`
+			Rank   int    `json:"rank" bson:"rank"`
+			Rating int    `json:"rating" bson:"rating"`
+			Score  int    `json:"score" bson:"score"`
 			Sheet  struct {
-				Scores string `json:"scores"`
-			} `json:"sheet,omitempty"`
+				Scores string `json:"scores" bson:"scores"`
+			} `json:"sheet,omitempty" bson:"sheet"`
 			// Sheet0 struct {
 			// 	Scores string `json:"scores"`
 			// 	Fire   bool   `json:"fire"`
@@ -52,29 +54,29 @@ type Tournament struct {
 			// 	Scores string `json:"scores"`
 			// 	Fire   bool   `json:"fire"`
 			// } `json:"sheet,omitempty"`
-		} `json:"players"`
-	} `json:"standing"`
-	ID        string    `json:"id"`
-	CreatedBy string    `json:"createdBy"`
-	StartsAt  time.Time `json:"startsAt"`
-	System    string    `json:"system"`
-	FullName  string    `json:"fullName"`
-	Minutes   int       `json:"minutes"`
+		} `json:"players" bson:"players"`
+	} `json:"standing" bson:"standing"`
+	ID        string    `json:"id" bson:"_id,omitempty"`
+	CreatedBy string    `json:"createdBy" bson:"createdBy"`
+	StartsAt  time.Time `json:"startsAt" bson:"startsAt"`
+	System    string    `json:"system" bson:"system"`
+	FullName  string    `json:"fullName" bson:"fullName"`
+	Minutes   int       `json:"minutes" bson:"minutes"`
 	Perf      struct {
-		Key  string `json:"key"`
-		Name string `json:"name"`
-		Icon string `json:"icon"`
-	} `json:"perf"`
+		Key  string `json:"key" bson:"key"`
+		Name string `json:"name" bson:"name"`
+		Icon string `json:"icon" bson:"icon"`
+	} `json:"perf" bson:"perf"`
 	Clock struct {
-		Limit     int `json:"limit"`
-		Increment int `json:"increment"`
-	} `json:"clock"`
-	Variant     string `json:"variant"`
-	Rated       bool   `json:"rated"`
-	Berserkable bool   `json:"berserkable"`
+		Limit     int `json:"limit" bson:"limit"`
+		Increment int `json:"increment" bson:"increment"`
+	} `json:"clock" bson:"clock"`
+	Variant     string `json:"variant" bson:"variant"`
+	Rated       bool   `json:"rated" bson:"rated"`
+	Berserkable bool   `json:"berserkable" bson:"berserkable"`
 	Verdicts    struct {
-		List     []interface{} `json:"list"`
-		Accepted bool          `json:"accepted"`
-	} `json:"verdicts"`
-	Description string `json:"description"`
+		List     []interface{} `json:"list" bson:"list"`
+		Accepted bool          `json:"accepted" bson:"accepted"`
+	} `json:"verdicts" bson:"verdicts"`
+	Description string `json:"description" bson:"description"`
 }

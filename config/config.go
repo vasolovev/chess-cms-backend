@@ -15,6 +15,7 @@ type (
 		HTTP  `yaml:"http"`
 		Log   `yaml:"logger"`
 		Mongo `yaml:"mongo"`
+		GRPC  `yaml:"grpc"`
 	}
 
 	// App -.
@@ -38,6 +39,10 @@ type (
 		User     string `yaml:"user" env:"MONGO_USER"`
 		Password string `yaml:"password" env:"MONGO_PASSWORD"`
 		Name     string `env-required:"true" yaml:"name" env:"MONGO_NAME"`
+	}
+	GRPC struct {
+		IP   string `env-required:"true" yaml:"ip" env:"GRPC_IP"`
+		Port int    `env-required:"true" yaml:"port" env:"GRPC_PORT"`
 	}
 )
 

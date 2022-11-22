@@ -2,8 +2,9 @@ package main
 
 import (
 	"log"
-	"v1/config"
-	"v1/internal/app"
+
+	"github.com/vasolovev/ChessCMS/config"
+	"github.com/vasolovev/ChessCMS/internal/app"
 )
 
 func main() {
