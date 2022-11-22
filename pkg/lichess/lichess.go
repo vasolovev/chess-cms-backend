@@ -6,7 +6,8 @@ import (
 	"io"
 	"net/http"
 	"strconv"
-	"v1/internal/entity"
+
+	"github.com/vasolovev/ChessCMS/internal/entity"
 )
 
 func GetInfoAboutTournament(tournamentID string) (entity.Tournament, error) {

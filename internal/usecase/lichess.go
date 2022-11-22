@@ -3,7 +3,8 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"v1/internal/entity"
+
+	"github.com/vasolovev/ChessCMS/internal/entity"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

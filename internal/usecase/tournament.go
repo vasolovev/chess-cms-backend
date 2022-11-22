@@ -3,8 +3,9 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"v1/internal/entity"
-	"v1/pkg/export"
+
+	"github.com/vasolovev/ChessCMS/internal/entity"
+	"github.com/vasolovev/ChessCMS/pkg/export"
 )
 
 // TournamentUseCase -.

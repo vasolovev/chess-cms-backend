@@ -2,8 +2,8 @@
 package v1
 
 import (
-	"v1/internal/usecase"
-	"v1/pkg/logger"
+	"github.com/vasolovev/ChessCMS/internal/usecase"
+	"github.com/vasolovev/ChessCMS/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 )

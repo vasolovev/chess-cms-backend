@@ -1,4 +1,4 @@
-module v1
+module github.com/vasolovev/ChessCMS
 
 go 1.19
 
@@ -6,6 +6,7 @@ require (
 	github.com/rs/zerolog v1.15.0
 	go.mongodb.org/mongo-driver v1.10.4
 	golang.org/x/net v0.0.0-20220812174116-3211cb980234
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -14,6 +15,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -49,8 +51,8 @@ require (
 	golang.org/x/crypto v0.0.0-20220817201139-bc19a97f63c8 // indirect
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
 	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
-	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
+	golang.org/x/text v0.4.0 // indirect
+	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
@@ -64,4 +66,5 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/xuri/excelize/v2 v2.6.1
+	google.golang.org/grpc v1.51.0
 )

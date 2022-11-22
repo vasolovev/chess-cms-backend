@@ -2,7 +2,8 @@ package export
 
 import (
 	"fmt"
-	"v1/internal/entity"
+
+	"github.com/vasolovev/ChessCMS/internal/entity"
 
 	"github.com/xuri/excelize/v2"
 )
