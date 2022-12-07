@@ -1,4 +1,9 @@
-# ChessCMS
- 
-docker run --name mongodb -d -p 27017:27017 mongo
-protoc -I=./protobuf --go_out=./protobuf ./protobuf/chess.proto
+Проект по учету посещаемости студентами шахматных турниров. Скачивает результаты с Lichess и возвращает в Telegram бот.
+
+Используемые технологии
+MongoDB
+Telegram bot
+
+В процессе добавления
+Redis
+RabbitMQ
