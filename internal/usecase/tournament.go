@@ -22,7 +22,7 @@ func NewTournamentUseCase(r TournamentRepo, w TournamentWebAPI) *TournamentUseCa
 	}
 }
 
-func (uc *TournamentUseCase) Add(ctx context.Context, id string) (entity.Tournament, error) {
+func (uc *TournamentUseCase) Create(ctx context.Context, id string) (entity.Tournament, error) {
 	// Проверяем есть ли запись о турнире в БД
 	res, err := uc.repo.GetByID(ctx, id)
 	if err == nil {
@@ -61,7 +61,10 @@ func (uc *TournamentUseCase) GetAll(ctx context.Context) ([]entity.Tournament, e
 		return []entity.Tournament{}, fmt.Errorf("TournamentUseCase - GetAll - uc.repo.GetAll: %w", err)
 	}
 
-	uc.ExportToXlsx(ctx, tournaments)
+	err = uc.ExportToXlsx(ctx, tournaments)
+	if err != nil {
+		return tournaments, fmt.Errorf("TournamentUseCase - GetAll - uc.ExportToXlsx: %w", err)
+	}
 	return tournaments, nil
 }
 

@@ -21,7 +21,4 @@ mongo:
 rabbitmq:
   rpc_server_exchange: 'rpc_server'
   rpc_client_exchange: 'rpc_client'
-
-grpc:
-  ip: 'localhost'
-  port: 50551
+  rpc_url: 'amqp://guest:guest@localhost:5672/'

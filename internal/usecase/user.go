@@ -21,10 +21,10 @@ func NewUserUseCase(r UserRepo) *UserUseCase {
 	}
 }
 
-func (uc *UserUseCase) Add(ctx context.Context, user entity.User) error {
+func (uc *UserUseCase) Create(ctx context.Context, user entity.User) error {
 	err := uc.repo.Create(ctx, user)
 	if err != nil {
-		return fmt.Errorf("UserUseCase - Add - uc.repo.Create: %w", err)
+		return fmt.Errorf("UserUseCase - Create - uc.repo.Create: %w", err)
 	}
 	return err
 }

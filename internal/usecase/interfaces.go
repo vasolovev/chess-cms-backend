@@ -13,7 +13,7 @@ import (
 
 type (
 	Tournament interface {
-		Add(context.Context, string) (entity.Tournament, error)
+		Create(context.Context, string) (entity.Tournament, error)
 		GetByID(context.Context, string) (entity.Tournament, error)
 		GetAll(context.Context) ([]entity.Tournament, error)
 	}
@@ -31,7 +31,7 @@ type (
 	}
 
 	User interface {
-		Add(context.Context, entity.User) error
+		Create(context.Context, entity.User) error
 		GetByID(context.Context, primitive.ObjectID) (entity.User, error)
 		GetAll(context.Context) ([]entity.User, error)
 		Delete(context.Context, primitive.ObjectID) error

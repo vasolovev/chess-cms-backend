@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"fmt"
-	"net"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,9 +15,10 @@ import (
 	"github.com/vasolovev/ChessCMS/pkg/httpserver"
 	"github.com/vasolovev/ChessCMS/pkg/logger"
 	"github.com/vasolovev/ChessCMS/pkg/mongodb"
+	"github.com/vasolovev/ChessCMS/pkg/rabbitmq/rmq_rpc/server"
 
 	"github.com/gin-gonic/gin"
-	"google.golang.org/grpc"
+	amqprpc "github.com/vasolovev/ChessCMS/internal/controller/amqp_rpc"
 )
 
 func Run(cfg *config.Config) {
@@ -50,19 +50,13 @@ func Run(cfg *config.Config) {
 	v1.NewRouter(handler, l, tournamentUseCase, userUseCase, lichessAccountUseCase)
 	httpServer := httpserver.New(handler, httpserver.Port(cfg.HTTP.Port))
 
-	// gRPC Server
-	go func() {
-		listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", cfg.GRPC.IP, cfg.GRPC.Port))
-		if err != nil {
-			l.Error(fmt.Errorf("app - Run - gRPC.Listen: %w", err))
-		}
+	// RabbitMQ RPC Server
+	rmqRouter := amqprpc.NewRouter(tournamentUseCase)
 
-		serverOptions := []grpc.ServerOption{}
-
-		grpcServer := grpc.NewServer(serverOptions...)
-
-		err = grpcServer.Serve(listener)
-	}()
+	rmqServer, err := server.New(cfg.RMQ.URL, cfg.RMQ.ServerExchange, rmqRouter, l)
+	if err != nil {
+		l.Fatal(fmt.Errorf("app - Run - rmqServer - server.New: %w", err))
+	}
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)
@@ -73,6 +67,8 @@ func Run(cfg *config.Config) {
 		l.Info("app - Run - signal: " + s.String())
 	case err = <-httpServer.Notify():
 		l.Error(fmt.Errorf("app - Run - httpServer.Notify: %w", err))
+	case err = <-rmqServer.Notify():
+		l.Error(fmt.Errorf("app - Run - rmqServer.Notify: %w", err))
 	}
 
 	// Shutdown
@@ -83,5 +79,10 @@ func Run(cfg *config.Config) {
 
 	if err := mongoClient.Disconnect(context.Background()); err != nil {
 		l.Error(fmt.Errorf("app - Run - mongoClient.Disconnect: %w", err))
+	}
+
+	err = rmqServer.Shutdown()
+	if err != nil {
+		l.Error(fmt.Errorf("app - Run - rmqServer.Shutdown: %w", err))
 	}
 }

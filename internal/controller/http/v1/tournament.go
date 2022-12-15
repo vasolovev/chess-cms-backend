@@ -25,22 +25,10 @@ func newTournamentRoutes(handler *gin.RouterGroup, t usecase.Tournament, l logge
 		h.POST("/add", r.add)
 	}
 }
-func (r *tournamentRoutes) getAll(c *gin.Context) {
-	tournaments, err := r.t.GetAll(c.Request.Context())
 
-	if err != nil {
-		fmt.Errorf("TournamentHttp - getAll - r.t.GetAll: %w", err)
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status": "failure",
-		})
-		return
-	}
-	c.JSON(http.StatusOK, tournaments)
-	return
-}
 func (r *tournamentRoutes) add(c *gin.Context) {
 	id := c.Query("id")
-	tournament, err := r.t.Add(c.Request.Context(), id)
+	tournament, err := r.t.Create(c.Request.Context(), id)
 
 	if err != nil {
 		fmt.Errorf("TournamentHttp - getAll - r.t.Add: %w", err)
@@ -78,5 +66,18 @@ func (r *tournamentRoutes) getByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, tournament)
+	return
+}
+func (r *tournamentRoutes) getAll(c *gin.Context) {
+	tournaments, err := r.t.GetAll(c.Request.Context())
+
+	if err != nil {
+		fmt.Errorf("TournamentHttp - getAll - r.t.GetAll: %w", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": "failure",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, tournaments)
 	return
 }

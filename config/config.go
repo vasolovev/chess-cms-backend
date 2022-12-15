@@ -15,7 +15,7 @@ type (
 		HTTP  `yaml:"http"`
 		Log   `yaml:"logger"`
 		Mongo `yaml:"mongo"`
-		GRPC  `yaml:"grpc"`
+		RMQ   `yaml:"rabbitmq"`
 	}
 
 	// App -.
@@ -40,9 +40,11 @@ type (
 		Password string `yaml:"password" env:"MONGO_PASSWORD"`
 		Name     string `env-required:"true" yaml:"name" env:"MONGO_NAME"`
 	}
-	GRPC struct {
-		IP   string `env-required:"true" yaml:"ip" env:"GRPC_IP"`
-		Port int    `env-required:"true" yaml:"port" env:"GRPC_PORT"`
+	// RMQ -.
+	RMQ struct {
+		ServerExchange string `env-required:"true" yaml:"rpc_server_exchange" env:"RMQ_RPC_SERVER"`
+		ClientExchange string `env-required:"true" yaml:"rpc_client_exchange" env:"RMQ_RPC_CLIENT"`
+		URL            string `env-required:"true" yaml:"rpc_url" env:"RMQ_URL"`
 	}
 )
 
